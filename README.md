@@ -26,14 +26,15 @@ Use both in the real world as a hybrid
 - Keep backups and avoid SPOF
 - also do preprocessing before hand. If there is an initialization step like making the bread of the pizza that can be done asynchronously, prepare this before hand at a non peak hour
 - employ a microservice architecture for your pizza orders such that a team of specialized people work on garlic pizza, and another group works on cheese. This is also good for scaling individual processes that can be decoupled and also polling the status of an order doesn't involve polling everyone, but only the allocated chefs that work on the process.
-| Category	Monolithic Architecture	Microservice Architecture
-Design	Single unified application	Collection of independent, loosely coupled services
-Codebase	Single codebase	Multiple codebases, one for each microservice
-Deployment	Deployed as a single unit	Each microservice is deployed independently
-Scaling	Scale the entire application	Scale individual microservices based on demand
-Fault Isolation	One failure can crash the entire application	Failures are isolated to individual services
-Technology Stack	Typically one stack for the whole application	Can use different technologies for each microservice
-Development Speed	Slow, because the entire application needs to be redeployed	Faster, since services can be deployed independently
-Communication	Internal function calls between components	Network-based communication (e.g., HTTP, RPC, messaging)
-Testing	Harder to test the entire system due to tight coupling	Easier to test individual services but integration testing is complex
-Operational Complexity	Simpler to deploy and manage, but becomes harder as app grows	Complex due to multiple services to manage
+| Category | 	Monolithic Architecture |	Microservice Architecture
+| -- | -- | -- |
+Design |	Single unified application	| Collection of independent, loosely coupled services
+Codebase	| Single codebase	| Multiple codebases, one for each microservice
+Deployment |	Deployed as a single unit	| Each microservice is deployed independently
+Scaling	| Scale the entire application	| Scale individual microservices based on demand
+Fault | Isolation	One failure can crash the entire application	| Failures are isolated to individual services
+Technology | Stack	Typically one stack for the whole application	| Can use different technologies for each microservice
+Development | Speed	Slow, because the entire application needs to be redeployed |	Faster, since services can be deployed independently
+Communication |	Internal function calls between components	| Network-based communication (e.g., HTTP, RPC, messaging)
+Testing	| Harder to test the entire system due to tight coupling	| Easier to test individual services but integration testing is complex
+Operational | Complexity	Simpler to deploy and manage, but becomes harder as app grows |	Complex due to multiple services to manage
