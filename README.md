@@ -96,3 +96,16 @@ The hash function is used to assign each server and key to a position on this ri
 - use many regions
 
 ## Content Delivery Networks
+- let's say some users want to connect to your website
+- they first resolve the DNS address, and ask what the domain name's IP is. Now you try to connect to that IP address
+- In a simple system, this IP address belongs to a web server which has web pages (HTML, CSS, JS)
+- you can keep a cache on this server to return static pages that can be returned quickly.
+- The problem is when you have multiple clients, especially all over the world
+- there is no single server that's quick to connect to for the average person.
+- soln: Take the cache and distribute it across the globe
+- This entire solution is called a CDN or content delivery network
+- CDNs are made by large companies, boxes are close to users, follow regulations, content updated by server.
+- Amazon CloudFront is an example of a CDN and has good integration with S3.
+
+
+
