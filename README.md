@@ -61,4 +61,38 @@ The hash function is used to assign each server and key to a position on this ri
 - Handling Server Changes:
 - When a server is added, only the keys that would have been assigned to this server (based on its position in the ring) are redistributed. All other keys remain with their original servers.
 - When a server is removed, only the keys assigned to this server are redistributed to the next server in the ring.
-- 
+- **TODO**
+
+## Caching in distrubuted systems
+- let's say you have a user on Instagram, who's asking for their feed.
+- The request reaches the server. the server queries the db: for this user, select all posts from all following.
+- the response comes back from db to server to client. Overall time is 220 ms (100 ms client to server, 10 ms server to db, 10 ms db to sever, 100 ms server to client)
+- Now one important thing, is that the server may deliver the same content as a response to more than 1 user so long as their interests are similar.
+- In this way you can group users into a single cohort and give them similar news feeds. Now when 1 user from this cohort, asks for a news feed, cache the response in the server so that when another user comes, the server can pull from cache and it takes 202 ms assuming cache takes 1 ms to hit.
+- And while it doesn't look like a lot now, this can be extended to the mobile device you have so that you can cache results on the client's device itself.
+- When you fetch your news feed, you can reuse the news feed.
+- be smart with cache eviction policies. (LRU, LFU, etc)
+- **Thrasing** occurs when you are evicting elements from your cache that are being polled and if you have a cyclic request ABCD when your cache can only fit 3 elements, then its cooked
+- Another problem of caches is eventual consistency. If you have a copy of the data, then the copy has to be updated along with the original source of truth. In most cases, the DB is the source of truth. Cache has a stale copy or dirty copy.
+- Let's say you are seeing the number of likes on a YouTube video. For every added Like, there is a query to the db, but maybe the cache is updated every minute or hour, it doesnt need to have the latest value in cache, That helps reduce the work on the cache. But the drawback here is that the data is just not true.
+- For financial systems, you might see stale entries which could cause problems. This is known as eventual consistency as determined by your policy.
+- You can place cache honestly anywhere, global cache, server cache, db cache, etc.
+- In a large scale production system you do all 3. DBs have a super small cache.
+- But what you want is a distributed cache for a large scale distributed system, and the reason for this is, the cache can scale independently like redis.
+
+## SPOF in Distributed Systems
+- if a db crashes, the entire system crashes
+- the easiest way to mitigate this is to add another node. For instance, let's say you had a profile server on your app. Just duplicate and make another profile server. One way to set this up is to have the second node as a backup. For a server, this isn't so useful bc it's empty if no one is connected to it. On the other hand if this was a database, and every change is mirrored onto the next database, then the db is truly a backup of the data. backup services don't make much sense. When there is a copy of the data, you can say the database is more resilient than before.
+- If a server fails, that's bad, so make a backup server, for dbs, have a master slave architecture.
+- back to the server, add a load balancer to direct traffic accross servers
+- the load balancer itself is a SPOF, so add more load balancers.
+- Because of this the cleint may not know which load balancer to connect to.
+- In this way, we add the load balancer onto a DNS, and the client is going to connect to the DNS
+- We need to have multiple IP addresses being resolved under the same host.
+- For example, if we want to go to www.facebook.com, then the corresponding IP address should be one of the many load balancers
+- To call it a load balancer now is misleading which is why we call it a gateway,
+- are we done? hell no!
+- if the entire system is located in 1 location, it can all fail with 1 power outage
+- use many regions
+
+## Content Delivery Networks
